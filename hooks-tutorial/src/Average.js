@@ -1,10 +1,7 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useRef } from 'react';
 
 /*
-  useCallback은 주로 렌더링 성능을 최적화해야 하는 상황에서 사용한다.
-  이를 이용하면 이벤트 핸들러 함수를 필요할 때만 생성할 수 있다.
-  첫 번째 파라미터로 생성할 함수를 넣고,
-  두 번째 파라미터로 배열을 넣으면 된다. 이 때, 배열의 요소의 값이 바뀐 경우에만 함수를 새로 생성한다.
+  useRef는 함수형 컴포넌트에서 ref를 쉽게 사용할 수 있도록 해준다.
  */
 
 const getAverage = numbers => {
@@ -17,6 +14,7 @@ const getAverage = numbers => {
 const Average = () => {
   const [list, setList] = useState([]);
   const [number, setNumber] = useState('');
+  const inputEl = useRef(null);
 
   const onChange = useCallback(e => {
     setNumber(e.target.value);
@@ -26,13 +24,14 @@ const Average = () => {
     const nextList = list.concat(parseInt(number));
     setList(nextList);
     setNumber('');
+    inputEl.current.focus();
   }, [number, list]);
 
   const avg = useMemo(() => getAverage(list), [list]);
 
   return (
     <div>
-      <input value={number} onChange={onChange} />
+      <input value={number} onChange={onChange} ref={inputEl} />
       <button onClick={onInsert}>등록</button>
       <ul>
         {list.map((value, index) => {
