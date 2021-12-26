@@ -1,12 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 
 /*
-  useMemo를 사용하지 않고 평균값을 getAverage를 호출하여 바로 구하면,
-  값이 입력되기만 하여도 함수를 호출하게 된다.
-
-  => useMemo를 사용하여 렌더링 과정에서 특정 값이 바뀌었을 때만 연산을 실행하고,
-  원하는 값이 바뀌지 않았다면 이전에 연산했던 결과를 다시 사용한다.
-*/
+  useCallback은 주로 렌더링 성능을 최적화해야 하는 상황에서 사용한다.
+  이를 이용하면 이벤트 핸들러 함수를 필요할 때만 생성할 수 있다.
+  첫 번째 파라미터로 생성할 함수를 넣고,
+  두 번째 파라미터로 배열을 넣으면 된다. 이 때, 배열의 요소의 값이 바뀐 경우에만 함수를 새로 생성한다.
+ */
 
 const getAverage = numbers => {
   console.log('평균값 계산 중...');
@@ -19,15 +18,15 @@ const Average = () => {
   const [list, setList] = useState([]);
   const [number, setNumber] = useState('');
 
-  const onChange = e => {
+  const onChange = useCallback(e => {
     setNumber(e.target.value);
-  };
+  }, []);
 
-  const onInsert = e => {
+  const onInsert = useCallback(() => {
     const nextList = list.concat(parseInt(number));
     setList(nextList);
     setNumber('');
-  };
+  }, [number, list]);
 
   const avg = useMemo(() => getAverage(list), [list]);
 
