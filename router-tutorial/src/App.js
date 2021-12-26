@@ -4,6 +4,7 @@ import About from './About';
 import Home from './Home';
 import Profiles from './Profiles';
 import Profile from './Profile';
+import NavigateSample from './NavigateSample';
 
 const App = () => {
   return (<div>
@@ -17,6 +18,9 @@ const App = () => {
       <li>
         <Link to='/profiles'>프로필</Link>
       </li>
+      <li>
+        <Link to='/navigate'>Navigate 예제</Link>
+      </li>
     </ul>
     <hr />
     <Routes>
@@ -26,6 +30,7 @@ const App = () => {
         <Route path='' element={<div>사용자를 선택하세요.</div>} />
         <Route path=':username' element={<Profile />} />
       </Route>
+      <Route path='/navigate' element={<NavigateSample />} />
     </Routes>
   </div>);
 };
