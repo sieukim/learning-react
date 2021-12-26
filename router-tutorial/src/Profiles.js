@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Routes, Route } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import Profile from './Profile';
 
 const Profiles = () => {
@@ -13,10 +13,7 @@ const Profiles = () => {
         <Link to='/profiles/vvsos1'>vvsos1</Link>
       </li>
     </ul>
-    <Routes>
-      <Route path='' element={<div>사용자를 선택해주세요</div>} />
-      <Route path=':username' element={<Profile />} />
-    </Routes>
+    <Outlet />
   </div>);
 };
 

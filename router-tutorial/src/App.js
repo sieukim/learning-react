@@ -22,7 +22,10 @@ const App = () => {
     <Routes>
       <Route path='/' element={<Home />} />
       <Route path='/about' element={<About />} />
-      <Route path='/profiles/*' element={<Profiles />} />
+      <Route path='/profiles' element={<Profiles />}>
+        <Route path='' element={<div>사용자를 선택하세요.</div>} />
+        <Route path=':username' element={<Profile />} />
+      </Route>
     </Routes>
   </div>);
 };
