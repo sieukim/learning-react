@@ -1,4 +1,13 @@
 import React, { useRef, useCallback, useState } from 'react';
+import produce from 'immer';
+
+/*
+  함수 producer는 첫 번째 파라미터에 수정하고 싶은 상태를 받고,
+  두 번째 파라미터에 어떻게 업데이트할지 정의하는 함수를 받는다.
+
+  두 번째 파라미터로 전달되는 함수 내부에서 원하는 값을 변경하면,
+  produce 함수가 불변성 유지를 대신해 주면서 새로운 상태를 생성해준다.
+ */
 
 const App = () => {
   const nextId = useRef(1);
@@ -8,12 +17,14 @@ const App = () => {
   const onChange = useCallback(
     e => {
       const { name, value } = e.target;
-      setForm({
-        ...form,
-        [name]: [value],
-      });
+      setForm(
+        produce(form, draft => {
+          draft[name] = value;
+        }),
+      );
     }, [form],
   );
+
 
   const onSubmit = useCallback(
     e => {
@@ -25,10 +36,11 @@ const App = () => {
         username: form.username,
       };
 
-      setData({
-        ...data,
-        array: data.array.concat(info),
-      });
+      setData(
+        produce(data, draft => {
+          draft.array.push(info);
+        }),
+      );
 
       setForm({
         name: '',
@@ -41,10 +53,12 @@ const App = () => {
 
   const onRemove = useCallback(
     id => {
-      setData({
-        ...data,
-        array: data.array.filter(info => info.id !== id),
-      });
+      setData(
+        produce(data, draft => {
+          draft.array.splice(draft.array.findIndex(info => info.id === id), 1);
+        }),
+      );
+
     }, [data],
   );
 
